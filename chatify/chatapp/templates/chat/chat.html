@@ -1,0 +1,578 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Chatify</title>
+        <meta name = "viewport" content="width=device-width, initial-scale = 1.0" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link  href="{% static 'node_modules/cropperjs/dist/cropper.min.css' %}" rel="stylesheet">
+
+        <!-- tui image - editor -->
+        <link  href="{% static 'node_modules/tui-color-picker/dist/tui-color-picker.min.css' %}" rel="stylesheet">
+        <link  href="{% static 'node_modules/tui-image-editor/dist/tui-image-editor.css' %}" rel="stylesheet">
+
+        <!-- JavaScript Bundle with Popper -->
+
+        <!-- jquery  -->
+        <script src="{% static 'node_modules/jquery/dist/jquery.min.js' %}"></script>
+
+        <!-- bootstrap js  -->
+        <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+
+        <!-- tui image editor js  -->
+        <script type="text/javascript" src="{% static 'node_modules/fabric/dist/fabric.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'node_modules/tui-code-snippet/dist/tui-code-snippet.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'node_modules/tui-color-picker/dist/tui-color-picker.min.js' %}"></script>
+        <script type = "module" src="{% static 'node_modules/tui-image-editor/dist/tui-image-editor.js' %}"></script>
+
+    </head>
+    <body id="body-pd">
+        <div class="body_pd">
+           <div class="l-navbar" id='nav-bar'>
+            <span class="material-icons-outlined hid">
+                <a href="#" class="nav_logo nav_logo-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Logo">icecream</a>
+            </span>
+            <span class="material-icons-outlined">
+                <a href="#" class="nav_link" data-bs-toggle="tooltip" id="Discover" data-bs-placement="right" title="Create chat">group_add</a>
+            </span>
+            <span class="material-icons-outlined">
+                <a href="#" class="nav_link" data-bs-toggle="tooltip" id="Friends" data-bs-placement="right" title="Friends">people</a>
+            </span>
+            <span class="material-icons-outlined">
+                <a href="#" class="nav_link" data-bs-toggle="tooltip" id="Chats" data-bs-placement="right" title="Chats">chat_bubble_outline</a>
+            </span>
+            <span class="material-icons-outlined hid">
+                <a href="#" class="nav_link" data-bs-toggle="tooltip" id="Notifications" data-bs-placement="right" title="Notifications">notifications</a>
+            </span>
+            <span class="material-icons-outlined">
+                <a href="#" class="nav_link" data-bs-toggle="tooltip" id="Settings" data-bs-placement="right" title="Settings">settings</a>
+            </span>
+            <span class="">
+                <a href="#" id="Profile_icon" data-bs-toggle="tooltip" title="Profile" data-bs-placement="right" ><img src="/media/{{profile_pic}}" alt="profile" id="nav_profile"></a>
+            </span>
+            <!-- <span class="material-icons-outlined bottom profile1">
+                <a href="#" class="nav_link" data-bs-toggle="tooltip" id="create" data-bs-placement="right" title="Profile"><img src="" alt="people" style="border-radius: 10em;"></a>
+            </span> -->
+            </div>
+        
+            <div id="frame">
+                <div id="sidepanel" class="flex-column">
+                    <div id="profile">
+                        <div class="wrap">
+                            <h3 id="title" class="fw-normal"></h3>
+                        </div>
+                    </div>
+                    <div id="search" class="d-flex flex-row justify-content-center text-center">
+                        <div class="form-group has-search">
+                            <span class="fa fa-search form-control-feedback"></span> 
+                            <input type="text" class="form-control is-valid" placeholder="Search" id="search_input">
+                            <div class="invalid-feedback" id="Search_message"></div>
+                        </div>
+                    </div>
+                    
+                    <div id="contacts" class="Chats">
+                        <ul id="Chats_ul">
+                            {% for j in chats %}
+                                <li class="contact d-flex" id = "{{j.room_id}}">
+                                    <div class="wrap">
+                                        <span class="contact-status {{j.status}}"></span>
+                                        <img src="/media/{{j.image}}" id='{{j.user}}' alt="profile pic" />
+                                        <div class="meta">
+                                            <p class="name">{%if j.first_name != '' %} {{j.first_name}} {{j.last_name}} {% else %}{{j.username}} {% endif %}</p>
+                                            <p class="preview">{{j.last_message}}</p>
+                                            <div style="display: flex; flex-direction: row;"><p class="typing">typing<div class="dot-pulse"></div></p></div>
+                                        </div>
+                                    </div>
+                                    <div class="badge1 badge1-circle bg-primary ms-5">
+                                        <span>0</span>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div id="contacts" class = "Friends">
+                        <ul id='Friends_ul'>
+                            {% for i,k in friends.items %}
+                                <p class="fw-bold text-muted" style="margin-left: 10px;">{{i}}</p>
+                                {% for j in k %}
+                                    <li class="contact" id = "{{j.room_id}}">
+                                        <div class="wrap">
+                                            <span class="contact-status {{j.status}}"></span>
+                                            <img src="/media/{{j.image}}" alt="profile pic" />
+                                            <div class="meta">
+                                                <p class="name">{%if j.first_name != '' %} {{j.first_name}} {{j.last_name}} {% else %}{{j.username}} {% endif %}</p>
+                                                <p class="preview">{{j.about}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div id="contacts" class="Discover" style="display: flex; flex-direction: column;">
+                        <ul id="people_list">
+                        </ul>
+                        <div class="d-grid d-md-block" id="invite_button_container">
+                            <button class="btn btn-secondary btn-lg btn-block" id="start_chat_button" style="width: 100%;">
+                                Start Chat
+                                <span class="material-icons-outlined" style="float: right; font-size: larger;">
+                                    chevron_right
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="contacts" class="Notifications flex-column h-100 justify-content-center text-center">
+                        <p class="text-muted">No Notifications Yet!...</p>
+                    </div>
+
+                    <div id="contacts" class="Settings">
+                        <div class="tab-pane fade active show" id="tab-content-settings" role="tabpanel">
+                            <div class="d-flex flex-column h-100">
+                                <div class="hide-scrollbar">
+                                    <div class="container py-8">
+
+                                        <!-- Profile -->
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row align-items-center gx-5">
+                                                    <div class="col-auto">
+                                                        <div class="avatar">
+                                                            <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                                <img src="/media/{{profile_pic}}" alt="#" class="avatar-img" id="Setting_profile">
+                                                            </a>
+
+                                                            <!-- <div class="badge badge-circle bg-secondary border-outline position-absolute bottom-0 end-0">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="7.5" cy="7.5" r="1"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                                            </div> -->
+                                                            <label class="stretched-label mb-0" for="upload-profile-photo"></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <h5>{{name}}</h5>
+                                                        <p>{{email}}</p>
+                                                    </div>
+                                                    <div class="col-auto" style="float: right;">
+                                                        <a href="#" class="text-danger">
+                                                            <div class="icon">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Profile -->
+
+                                        <!-- Account -->
+                                        <div class="mt-8">
+                                            <div class="d-flex align-items-center mb-4 px-6">
+                                                <small class="text-muted me-auto">Account</small>
+                                            </div>
+
+                                            <div class="card ">
+                                                <div class="card-body py-1">
+                                                    <!-- Accordion -->
+                                                    <div class="accordion accordion-flush" id="accordion-profile">
+                                                        <div class="accordion-item">
+                                                            <div class="accordion-header" id="accordion-profile-1">
+                                                                <a href="#" class="accordion-button text-reset collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-profile-body-1" aria-expanded="false" aria-controls="accordion-profile-body-1">
+                                                                    <div>
+                                                                        <h5>Profile settings</h5>
+                                                                        <p>Change your profile settings</p>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+
+                                                            <div id="accordion-profile-body-1" class="accordion-collapse collapse" aria-labelledby="accordion-profile-1" data-parent="#accordion-profile">
+                                                                <div class="accordion-body">
+                                                                    <div class="form-floating mb-6">
+                                                                        <input type="text" class="form-control" id="profile-name" placeholder="Name" value="{{name}}">
+                                                                        <label for="profile-name">Name</label>
+                                                                    </div>
+
+                                                                    <div class="form-floating mb-6">
+                                                                        <textarea class="form-control" placeholder="Bio" id="profile-bio" data-autosize="true" style="min-height: 120px; overflow: hidden; overflow-wrap: break-word; resize: none;" >{{about}}</textarea>
+                                                                        <label for="profile-bio">About</label>
+                                                                    </div>
+
+                                                                    <button type="button" class="btn btn-block btn-lg btn-primary w-100" id="update_info" disabled>Save</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Account -->
+
+                                        <!-- Security -->
+                                        <div class="mt-8">
+                                            <div class="d-flex align-items-center my-4 px-6">
+                                                <small class="text-muted me-auto">Security</small>
+                                            </div>
+
+                                            <div class="card ">
+                                                <div class="card-body py-2">
+                                                    <!-- Accordion -->
+                                                    <div class="accordion accordion-flush" id="accordion-security">
+                                                        <div class="accordion-item">
+                                                            <div class="accordion-header" id="accordion-security-1">
+                                                                <a href="#" class="accordion-button text-reset collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-security-body-1" aria-expanded="false" aria-controls="accordion-security-body-1">
+                                                                    <div>
+                                                                        <h5>Password</h5>
+                                                                        <p>Change your password</p>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+
+                                                            <div id="accordion-security-body-1" class="accordion-collapse collapse" aria-labelledby="accordion-security-1" data-parent="#accordion-security" >
+                                                                <div class="accordion-body">
+                                                                    <form action="#" autocomplete="on">
+                                                                        <div class="form-floating mb-6">
+                                                                            <input type="password" class="form-control" id="current-password" placeholder="Current Password" autocomplete="">
+                                                                            <label for="current-password">Current Password</label>
+                                                                        </div>
+
+                                                                        <div class="form-floating mb-6">
+                                                                            <input type="password" class="form-control" id="password" placeholder="New password" autocomplete="">
+                                                                            <label for="password">New password</label>
+                                                                        </div>
+
+                                                                        <div class="form-floating mb-6">
+                                                                            <input type="password" class="form-control" id="re_password" placeholder="Verify Password" autocomplete="">
+                                                                            <label for="re_password">Verify Password</label>
+                                                                            <div class="invalid-feedback" id="re_password_message"></div>
+                                                                        </div>
+                                                                    </form>
+                                                                    <button type="button" class="btn btn-block btn-lg btn-primary w-100" id="save_pass" disabled>Save</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Security -->
+
+                                        <!-- Storage -->
+                                        <div class="mt-8">
+                                            <div class="d-flex align-items-center my-4 px-6">
+                                                <small class="text-muted me-auto">Storage</small>
+
+                                                <div class="flex align-items-center text-muted">
+                                                    <a href="#" class="text-muted small link" style="text-decoration: none;">Clear storage
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bar-chart-2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            <div class="card ">
+                                                <div class="card-body py-2">
+                                                    <!-- Accordion -->
+                                                    <div class="accordion accordion-flush" id="accordion-storage">
+                                                        <div class="accordion-item">
+                                                            <div class="accordion-header" id="accordion-storage-1">
+                                                                <a href="#" class="accordion-button text-reset collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-storage-body-1" aria-expanded="false" aria-controls="accordion-storage-body-1">
+                                                                    <div>
+                                                                        <h5>Cache</h5>
+                                                                        <p>Maximum cache size</p>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+
+                                                            <div id="accordion-storage-body-1" class="accordion-collapse collapse" aria-labelledby="accordion-storage-1" data-parent="#accordion-storage">
+                                                                <div class="accordion-body">
+                                                                    <div class="row justify-content-between mb-4">
+                                                                        <div class="col-auto">
+                                                                            <small>2 GB</small>
+                                                                        </div>
+                                                                        <div class="col-auto">
+                                                                            <small>4 GB</small>
+                                                                        </div>
+                                                                        <div class="col-auto">
+                                                                            <small>6 GB</small>
+                                                                        </div>
+                                                                        <div class="col-auto">
+                                                                            <small>8 GB</small>
+                                                                        </div>
+                                                                    </div>
+                                                                    <input type="range" class="form-range" min="1" max="4" step="1" id="custom-range-1">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="accordion-item">
+                                                            <div class="accordion-header">
+                                                                <div class="row align-items-center">
+                                                                    <div class="col">
+                                                                        <h5>Keep media</h5>
+                                                                        <p>Photos, videos and other files</p>
+                                                                    </div>
+                                                                    <div class="col-auto">
+                                                                        <div class="form-check form-switch">
+                                                                            <input class="form-check-input" type="checkbox" id="accordion-storage-check-1">
+                                                                            <label class="form-check-label" for="accordion-storage-check-1"></label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Storage -->
+
+                                        <!-- Notifications -->
+                                        <div class="mt-8">
+                                            <div class="d-flex align-items-center my-4 px-6">
+                                                <small class="text-muted me-auto">Notifications</small>
+                                            </div>
+
+                                            <!-- Accordion -->
+                                            <div class="card ">
+                                                <div class="card-body py-2">
+                                                    <div class="accordion accordion-flush" id="accordion-notifications">
+                                                        <div class="accordion-item">
+                                                            <div class="accordion-header" id="accordion-notifications-1">
+                                                                <a href="#" class="accordion-button text-reset collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-notifications-body-1" aria-expanded="false" aria-controls="accordion-notifications-body-1">
+                                                                    <div>
+                                                                        <h5>Message</h5>
+                                                                        <p>Set custom notifications for users</p>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+
+                                                            <div id="accordion-notifications-body-1" class="accordion-collapse collapse" aria-labelledby="accordion-notifications-1" data-parent="#accordion-notifications" >
+                                                                <div class="accordion-body">
+                                                                    <div class="row align-items-center">
+                                                                        <div class="col">
+                                                                            <h5>Text</h5>
+                                                                            <p>Show text in notifications</p>
+                                                                        </div>
+
+                                                                        <div class="col-auto">
+                                                                            <div class="form-check form-switch">
+                                                                                <input class="form-check-input" type="checkbox" id="accordion-notifications-check-1">
+                                                                                <label class="form-check-label" for="accordion-notifications-check-1"></label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="accordion-item">
+                                                            <div class="accordion-header">
+                                                                <div class="row align-items-center">
+                                                                    <div class="col">
+                                                                        <h5>Sound</h5>
+                                                                        <p>Enable sound notifications</p>
+                                                                    </div>
+                                                                    <div class="col-auto">
+                                                                        <div class="form-check form-switch">
+                                                                            <input class="form-check-input" type="checkbox" id="accordion-notifications-check-3">
+                                                                            <label class="form-check-label" for="accordion-notifications-check-3"></label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="accordion-item">
+                                                            <div class="accordion-header">
+                                                                <div class="row align-items-center">
+                                                                    <div class="col">
+                                                                        <h5>Browser notifications</h5>
+                                                                        <p>Enable browser notifications</p>
+                                                                    </div>
+                                                                    <div class="col-auto">
+                                                                        <div class="form-check form-switch">
+                                                                            <input class="form-check-input" type="checkbox" id="accordion-notifications-check-2" checked="">
+                                                                            <label class="form-check-label" for="accordion-notifications-check-2"></label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Notifications -->
+
+                                        <!-- Devices -->
+                                        <div class="mt-8">
+                                            <div class="d-flex align-items-center my-4 px-6">
+                                                <small class="text-muted me-auto">Devices</small>
+
+                                                <div class="flex align-items-center text-muted">
+                                                    <a href="#" class="text-muted small link" style="text-decoration: none;">End all sessions
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            <div class="card ">
+                                                <div class="card-body py-3">
+
+                                                    <ul class="list-group list-group-flush">
+                                                        <li class="list-group-item">
+                                                            <div class="row align-items-center">
+                                                                <div class="col">
+                                                                    <h5>Windows ⋅ USA, Houston</h5>
+                                                                    <p>Today at 2:48 pm ⋅ Browser: Chrome</p>
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <span class="text-primary extra-small">active</span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+
+                                                        <li class="list-group-item">
+                                                            <div class="row align-items-center">
+                                                                <div class="col">
+                                                                    <h5>iPhone ⋅ USA, Houston</h5>
+                                                                    <p>Yesterday at 2:48 pm ⋅ Browser: Chrome</p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- Devices -->
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- content -->
+                <div class="flex-column h-100 justify-content-center text-center info_pick">
+                    <div class="mb-6">
+                        <span class="icon icon-xl text-muted">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        </span>
+                    </div>
+
+                    <p class="text-muted">Pick a person from left menu, <br> and start your conversation.</p>
+                </div>
+
+                <div class="content">
+                    <div class="contact-profile">
+                        <span class="material-icons-outlined" style="float: left; margin: .9em .3em 0 1em; cursor: pointer;" id="back_button">
+                            arrow_back_ios
+                        </span>
+                        <img src="" id = 'chat_profile_pic' alt="" />
+                        <p id="chat_profile_name"></p>
+                        <div class="menu">
+                            <span class="material-icons-outlined">
+                                more_vert
+                            </span>
+                        </div>
+                    </div>
+                    <div class="messages d-none" id="messages_container">
+                        <ul id="messages_ul"> 
+                        </ul>
+                    </div>
+                    <div id="tui-image-editor" class="d-flex"></div>
+                    <div class="message-input">
+                        <div class="input-group">
+                            <textarea name="" class="form-control" placeholder="Type your message..." id="chat-message-input" autofocus></textarea>
+                            <div class="input-group-append">
+                                <span class="smile" id="paperclip"><i class="fas fa-paperclip"><input id="attach_file" class="visually-hidden" type="file"></i></span>
+                            </div>
+                            <div class="input-group-append"  id="emoji-button">
+                                <span class="paper_clip"><i class="far fa-grin"></i></span>
+                            </div>
+                            <div class="input-group-append">
+                                <span class="camera"><i class="fas fa-camera"></i></span>
+                            </div>
+                            <div class="input-group-append" id="send">
+                                <span class="material-icons-outlined send_btn">
+                                    send
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+              <div class="modal-content">
+                <!-- <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div> -->
+                <div class="modal-body d-block" id="edit_profile_pic">
+                    <input id="upload-profile-photo" class="visually-hidden" type="file" accept="image/*">
+                    <img src="/media/{{profile_pic}}" alt="#" class="Profile_edit_preview" id="Profile_edit_preview">
+                    <div class="middle">
+                        <span class="material-icons-outlined fs-1" >
+                            camera
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-body d-none" id="new_profile_pic">
+                    <div class="d-flex flex-row justify-content-between mb-2">
+                        <span class="material-icons-outlined fs-2" style="color: red;" id="cancel_preview">
+                            highlight_off
+                        </span>
+                        <span class="material-icons-outlined fs-2" style="color: rgb(0, 102, 255);" id='undo'>
+                            undo
+                        </span>
+                        <span class="material-icons-outlined fs-2" style="color: green;" id='save_pic'>
+                            done
+                        </span>
+                    </div>
+                    <div id="new_profile_preview_container">
+                        <img src="#" alt="#" class="new_profile_preview" id='new_profile_preview'>  
+                    </div>
+                    <div class="d-none middle-spn spinner-grow text-light" role='status' id="loading">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <!-- <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div> -->
+              </div>
+            </div>
+          </div>
+    </body>
+    
+    {{ id|json_script:"json-user" }}
+    {{ profile_pic|json_script:"json-profile_pic" }}
+    {{ email|json_script:"json-email" }}
+    {{ name|json_script:"json-name" }}
+    {{ about|json_script:"json-about" }}
+    {{ vapid_key|json_script:"json-vapid_key" }}
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-performance.js"></script>
+
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script type="module" src="{% static 'js/chat.js' %}"></script>
+    <script type="module" src="{% static 'node_modules/cropperjs/dist/cropper.min.js' %}"></script>
+    <script type="module" src="{% static 'js/emoji.js' %}"></script>
+    <!-- <script type="module" src="{% static 'js/firebase-messaging-sw.js' %}"></script> -->
+    <script type="module" src="../../../../static/js/emoji.js"></script>
+</html>
