@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'chatify'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B0BBD1D1FE8C415AAF8D9E0BC6CD0C5D }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_147DB257F31C4C199E4D7439708EB712 }}
