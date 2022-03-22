@@ -1,15 +1,5 @@
 {
-  "name": "chatify",
-  "version": "1.0.0",
-  "description": "A chat application",
-  "main": "chat.js",
   "dependencies": {
     "firebase": "^9.0.0"
-  },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Hariprasad36825",
-  "license": "ISC"
+  }
 }
