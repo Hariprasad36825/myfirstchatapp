@@ -29,9 +29,8 @@ SECRET_KEY = 'django-insecure-m&7bwt4)^rbug$^6ce*afzjwh7rv_2j$jusjy6x^=pyxcnrla&
 DEBUG = False
 
 
-ALLOWED_HOSTS = ['172.22.205.21', 'localhost', '127.0.0.1',
-                 'chatify-server.postgres.database.azure.com']
-
+ALLOWED_HOSTS = ['*']
+        
 
 # Application definition
 
