@@ -30,7 +30,7 @@ import base64
 from django.core import files
 
 tmp_profile_image_name = "temp_profile_image.png"
-
+ic.disable()
 
 def logout_view(request):
     logout(request)
@@ -59,7 +59,7 @@ class Login(APIView):
 
 
 def index(request):
-    print(request.user)
+    # print(request.user)
     return render(request, 'chat/index.html')
 
 
@@ -80,7 +80,7 @@ def room(request, room_id):
     username = request.user.username
     messages = Room.objects.get(pk=room_id).message_set()[:25]
     user = request.user.username
-    print(messages)
+    # print(messages)
     return render(request, 'chat/room.html', {'room_name': room_id, 'username': username, 'messages': messages, 'user': user})
 
 
@@ -156,7 +156,7 @@ def send_verificationLink_email(request, user, subject, type):
         email = render_to_string('link_template/validationLink.txt', context)
 
         send_mail(subject, email, "demo", [user.email])
-        print("email sent")
+        # print("email sent")
     except:
         traceback.print_exc()
         return Response({"status": "error"})
@@ -254,7 +254,7 @@ class Discover(APIView):
             request.user.pk), ic(CustomUser.objects.filter(user=request.user).values_list('friends'))])
         result = list(ic(users.values('id', 'username')))
         for i, user in enumerate(users):
-            print(user.customuser_set.all().values('image', 'about')[0])
+            # print(user.customuser_set.all().values('image', 'about')[0])
             tmp = ic(user.customuser_set.all().values('image', 'about')[0])
             ic(tmp)
             result[i].update(tmp)
@@ -326,7 +326,7 @@ class GetMessages(APIView):
             unread_id = ic(unread.values_list('message', flat=True))
             rooms = tmp.message_set.all()
             # print(rooms.values())
-            print(len(rooms), upto)
+            # print(len(rooms), upto)
             tmp = upto if (len(rooms) - upto) > 0 else len(rooms)
             room = ic(rooms.values()[upto-50:tmp])
             messages = {}
@@ -369,7 +369,7 @@ class GetMessages(APIView):
         except:
             traceback.print_exc()
             return Response({'message': 'try after some time'}, HTTP_500_INTERNAL_SERVER_ERROR)
-# ic.diable()
+ic.disable()
 
 
 class SaveInfo(APIView):
@@ -425,7 +425,7 @@ class CropImage(APIView):
                                tmp_profile_image_name)
             storage = FileSystemStorage(location=url)
             image = base64.b64decode(imagestr)
-            print(image)
+            # print(image)
             with storage.open('', 'wb+') as destination:
                 destination.write(image)
                 destination.close()

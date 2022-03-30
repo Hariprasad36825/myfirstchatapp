@@ -186,14 +186,15 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# print(os.path.join(BASE_DIR, 'static'))
+STATIC_ROOT = os.path.join(BASE_DIR.parent, 'static')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR.parent, 'static')
+    os.path.join(BASE_DIR, 'static')
 ]
 
-TEMP = os.path.join(BASE_DIR.parent, 'media/temp')
+TEMP = os.path.join(BASE_DIR, 'media/temp')
 
-MEDIA_ROOT = os.path.join(BASE_DIR.parent, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 # Default primary key field type
@@ -241,7 +242,8 @@ FCM_DJANGO_SETTINGS = {
 
 
 cred = credentials.Certificate(os.path.join(
-    BASE_DIR.parent, "buoyant-arena-322216-firebase-adminsdk-uhloj-819b275836.json"))
+    BASE_DIR, "buoyant-arena-322216-firebase-adminsdk-uhloj-819b275836.json"))
+# print(BASE_DIR)
 firebase_admin.initialize_app(cred)
 
 if DEBUG:
