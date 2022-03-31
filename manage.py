@@ -2,7 +2,6 @@
 """Django's command-line utility for administrative tasks."""
 # from django.core.management import call_command
 import django
-import os
 import sys
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "chatify.settings")
