@@ -15,6 +15,10 @@ import firebase_admin
 from pathlib import Path
 import os
 
+# from dotenv import loadenv
+
+# loadenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,11 +30,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-m&7bwt4)^rbug$^6ce*afzjwh7rv_2j$jusjy6x^=pyxcnrla&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get("DJANGO_DEBUG", True)
 
 
-ALLOWED_HOSTS = ['*']
-        
+ALLOWED_HOSTS = ['172.22.205.21', 'localhost', '127.0.0.1',
+                 '.azure.com', '.herokuapp.com', '.azurewebsites.net']
+
 
 # Application definition
 
@@ -190,6 +195,7 @@ STATIC_ROOT = os.path.join(BASE_DIR.parent, 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 TEMP = os.path.join(BASE_DIR, 'media/temp')
 
@@ -203,15 +209,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # channel layers
 ASGI_APPLICATION = "chatify.asgi.application"
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "cofig": {
-            "hosts": [('127.0.0.1', 6379)],
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
         },
     },
 }
-
+# print(os.environ.get('REDIS_URL', 'redis://localhost:6379'))
 cred = open(os.path.join(BASE_DIR, "mail_credentials.txt"),
             mode='r', encoding='utf-8')
 email = str(cred.readline())
