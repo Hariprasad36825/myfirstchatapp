@@ -1,10 +1,14 @@
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
+# from django.core.management import call_command
+import django
 import os
 import sys
-os.environ['DJANGO_SETTINGS_MODULE'] = 'chatify.settings'
-import django
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "chatify.settings")
+
 django.setup()
+
 
 def main():
     """Run administrative tasks."""
