@@ -262,6 +262,6 @@ cred = credentials.Certificate(os.path.join(
 # print(BASE_DIR)
 firebase_admin.initialize_app(cred)
 
-# if DEBUG:
-import mimetypes
-mimetypes.add_type("application/javascript", ".js", True)
+if DEBUG:
+    import mimetypes
+    mimetypes.add_type("application/javascript", ".js", True)
