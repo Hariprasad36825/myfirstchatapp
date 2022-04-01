@@ -3,13 +3,13 @@
 *.pot
 *.pyc
 __pycache__
-db.sqlite3
+# db.sqlite3
 media/images
 media/temp
 
 # Backup files # 
 *.bak 
-
+staticfiles
 # If you are using PyCharm # 
 # User-specific stuff
 .idea/**/workspace.xml
