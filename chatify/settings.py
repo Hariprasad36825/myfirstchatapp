@@ -34,7 +34,7 @@ SECRET_KEY = 'django-insecure-m&7bwt4)^rbug$^6ce*afzjwh7rv_2j$jusjy6x^=pyxcnrla&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DJANGO_DEBUG")
 
-
+print(DEBUG)
 ALLOWED_HOSTS = ['172.22.205.21', 'localhost', '127.0.0.1',
                  '.azure.com', '.herokuapp.com', '.azurewebsites.net']
 
