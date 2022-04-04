@@ -290,8 +290,9 @@ async function createroom(data, url) {
 //web sockets
 var i = 0;
 function connect(id) {
+  // console.log(window.location.protocol)
   chatSocket = new WebSocket(
-    "wss://" + window.location.host + "/wss/" + id + "/"
+     ((window.location.protocol == "https:") ? "wss://" : "ws://") + window.location.host + "/ws/" + id + "/"
   );
 
   chatSocket.onmessage = function (e) {

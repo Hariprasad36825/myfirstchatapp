@@ -13,6 +13,7 @@ from firebase_admin.messaging import Message as Msg
 class ChatConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
+        # print(self.scope['user'])
         self.room_name = self.scope['url_route']['kwargs']['room_id']
         self.room_group_name = 'chat_%s' % self.room_name
         self.user = self.scope['user']
