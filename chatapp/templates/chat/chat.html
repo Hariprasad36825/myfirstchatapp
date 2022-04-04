@@ -585,8 +585,9 @@
 
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script type="module" src="{% static 'js/chat.js' %}"></script>
-    <script type="module" src="{% static 'node_modules/cropperjs/dist/cropper.min.js' %}"></script>
+    {% comment %} <script type="module" src="{% static 'node_modules/cropperjs/dist/cropper.min.js' %}"></script> {% endcomment %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js" integrity="sha512-ooSWpxJsiXe6t4+PPjCgYmVfr1NS5QXJACcR/FPpsdm6kqG1FmQ2SVyg2RXeVuCRBLr0lWHnWJP6Zs1Efvxzww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="module" src="{% static 'js/emoji.js' %}"></script>
     <!-- <script type="module" src="{% static 'js/firebase-messaging-sw.js' %}"></script> -->
-    <script type="module" src="../../../../static/js/emoji.js"></script>
+    {% comment %} <script type="module" src="../../../../static/js/emoji.js"></script> {% endcomment %}
 </html>
