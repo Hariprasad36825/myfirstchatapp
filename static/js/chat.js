@@ -27,7 +27,7 @@ var chatSocket;
 var tmp = 0;
 
 //get chats after refresh
-// window.localStorage.clear()
+// window.localStorage.clear()  
 var room_id = window.localStorage.getItem("room_id");
 if (room_id !== null) {
   document.getElementById(room_id).classList.add("active");
