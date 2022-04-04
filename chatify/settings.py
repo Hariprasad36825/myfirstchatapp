@@ -215,10 +215,7 @@ ASGI_APPLICATION = "chatify.asgi.application"
 
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [config('REDIS_URL')],
-        },
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
     },
 }
 # print(os.environ.get('REDIS_URL', 'redis://localhost:6379'))
