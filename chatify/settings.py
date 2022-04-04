@@ -15,6 +15,8 @@ import firebase_admin
 from pathlib import Path
 import os
 
+from decouple import config
+
 # from dotenv import loadenv
 
 # loadenv()
@@ -30,7 +32,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-m&7bwt4)^rbug$^6ce*afzjwh7rv_2j$jusjy6x^=pyxcnrla&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DJANGO_DEBUG", True)
+DEBUG = config("DJANGO_DEBUG")
+DEBUG = False
 
 
 ALLOWED_HOSTS = ['172.22.205.21', 'localhost', '127.0.0.1',
@@ -143,22 +146,13 @@ if DEBUG:
         }
     }
 else:
-    # DATABASES = {
-    #     'default': {
-    #         'ENGINE': 'django.db.backends.postgresql',
-    #         'NAME': os.environ['DBNAME'],
-    #         'HOST': os.environ['DBHOST'],
-    #         'USER': os.environ['DBUSER'],
-    #         'PASSWORD': 'localhost'
-    #     }
-    # }
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ['DBNAME'],
-            'HOST': os.environ['DBHOST'],
-            'USER': os.environ['DBUSER'],
-            'PASSWORD': os.environ['DBPASS']
+            'NAME': config('DBNAME'),
+            'HOST': config('DBHOST'),
+            'USER': config('DBUSER'),
+            'PASSWORD': config('DBPASS')
         }
     }
 
