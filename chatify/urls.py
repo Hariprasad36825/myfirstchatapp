@@ -26,5 +26,5 @@ urlpatterns = [
     path('', include('chatapp.urls')),
     path('activate/<uidb64>/<token>/<type>', views.activate, name='activate'),
     path('register-notif-token/',
-    FCMDeviceAuthorizedViewSet.as_view({'post': 'create'}), name='create_fcm_device'),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+         FCMDeviceAuthorizedViewSet.as_view({'post': 'create'}), name='create_fcm_device'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

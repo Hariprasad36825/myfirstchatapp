@@ -1,10 +1,10 @@
 import { getCookie } from "./getCookie.js";
-
+// import {Tooltip} from boots;
 // tootip code
 var tooltipTriggerList = [].slice.call(
   document.querySelectorAll('[data-bs-toggle="tooltip"]')
 );
-var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+tooltipTriggerList.map(function (tooltipTriggerEl) {
   return new bootstrap.Tooltip(tooltipTriggerEl);
 });
 $('[data-bs-toggle="tooltip"]').on("click", function () {
@@ -27,6 +27,7 @@ var chatSocket;
 var tmp = 0;
 
 //get chats after refresh
+// window.localStorage.clear()
 var room_id = window.localStorage.getItem("room_id");
 if (room_id !== null) {
   document.getElementById(room_id).classList.add("active");
@@ -69,7 +70,7 @@ objDiv.addEventListener("scroll", function () {
 });
 
 //get room and its chats
-async function get_chats(id, profile, name, upto) {
+async function get_chats(id, profile, name, upto=50) {
   window.localStorage.setItem("room_id", id);
   window.localStorage.setItem("image", profile);
   window.localStorage.setItem("name", name);
@@ -654,7 +655,9 @@ document.getElementById("search_input").addEventListener("input", function () {
                     `;
 
             var btn = document.getElementById("start_chat_button");
-            btn.disabled = true;
+            btn.disabled = false;
+            // console.log(btn)
+
             btn.addEventListener("click", function () {
               var id = document
                 .getElementById("people_list")

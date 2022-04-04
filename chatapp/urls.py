@@ -4,14 +4,16 @@ from . import views
 
 urlpatterns = [
     # path('',views.index, name='index'),
-    path('firebase-messaging-sw.js', TemplateView.as_view(template_name='firebase-messaging-sw.js', content_type='application/x-javascript')),
-    path('register/',views.register, name='register'),
-    path('login',views.login, name='login'),
-    path('mailsent',views.mailsent, name='mailsent'),
-    path('successful',views.successful, name='successful'),
-    path('forgotpassword',views.forgotpassword, name='forgotpassword'),
-    path('',views.chat, name='chat'),
-    path('changepassword/<int:id>/<str:token>',views.changepassword, name='changepassword'),
+    path('firebase-messaging-sw.js', TemplateView.as_view(
+        template_name='firebase-messaging-sw.js', content_type='application/x-javascript')),
+    path('register/', views.register, name='register'),
+    path('login', views.login, name='login'),
+    path('mailsent', views.mailsent, name='mailsent'),
+    path('successful', views.successful, name='successful'),
+    path('forgotpassword', views.forgotpassword, name='forgotpassword'),
+    path('', views.chat, name='chat'),
+    path('changepassword/<int:id>/<str:token>',
+         views.changepassword, name='changepassword'),
     # path('<int:room_id>/',views.room, name='room'),
 
     # api

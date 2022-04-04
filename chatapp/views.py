@@ -30,7 +30,7 @@ import base64
 from django.core import files
 
 tmp_profile_image_name = "temp_profile_image.png"
-ic.disable()
+# ic.disable()
 
 def logout_view(request):
     logout(request)
@@ -245,13 +245,14 @@ class ChangePassword(APIView):
 
 
 class Discover(APIView):
+    ic.disable()
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
         data = ic(request.data)
-
+        ic(User.objects.filter(username__contains=data["input"]))
         users = User.objects.filter(username__contains=data["input"]).exclude(pk__in=[ic(
-            request.user.pk), ic(CustomUser.objects.filter(user=request.user).values_list('friends'))])
+            request.user.pk)])
         result = list(ic(users.values('id', 'username')))
         for i, user in enumerate(users):
             # print(user.customuser_set.all().values('image', 'about')[0])
@@ -263,6 +264,7 @@ class Discover(APIView):
         if not result:
             # print(1/0)
             result.append({"message": 0})
+        # print(result)
         return Response(result, HTTP_200_OK)
 
 
@@ -315,7 +317,7 @@ class CreateRoom(APIView):
 
 class GetMessages(APIView):
     permission_classes = [IsAuthenticated]
-    ic.disable()
+    # ic.disable()
 
     def post(self, request):
         try:
@@ -369,7 +371,7 @@ class GetMessages(APIView):
         except:
             traceback.print_exc()
             return Response({'message': 'try after some time'}, HTTP_500_INTERNAL_SERVER_ERROR)
-ic.disable()
+# ic.disable()
 
 
 class SaveInfo(APIView):
