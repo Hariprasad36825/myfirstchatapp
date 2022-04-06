@@ -8,7 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         // position of the emoji picker. Available positions:
         // auto-start, auto-end, top, top-start, top-end, right, right-start, right-end, bottom, bottom-start, bottom-end, left, left-start, left-end
-        position: 'top',
+        position: 'auto-start',
     
         // 1.0, 2.0, 3,0, 4.0, 5.0, 11.0, 12.0, 12.1
         emojiVersion: '13.1',

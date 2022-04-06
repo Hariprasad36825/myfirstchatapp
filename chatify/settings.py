@@ -29,12 +29,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-m&7bwt4)^rbug$^6ce*afzjwh7rv_2j$jusjy6x^=pyxcnrla&'
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DJANGO_DEBUG")
 
-
+print(DEBUG)
 ALLOWED_HOSTS = ['172.22.205.21', 'localhost', '127.0.0.1',
                  '.azure.com', '.herokuapp.com', '.azurewebsites.net']
 
@@ -136,7 +136,6 @@ WSGI_APPLICATION = 'chatify.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
 if DEBUG:
     DATABASES = {
         'default': {

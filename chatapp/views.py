@@ -1,3 +1,4 @@
+from email import message
 import django
 from django.contrib.auth.models import User
 from django.core.files import storage
@@ -29,12 +30,8 @@ import cv2
 import base64
 from django.core import files
 
-tmp_profile_image_name = "temp_profile_image.png"
+tmp_profile_image_name = "temp_profile_image.webp"
 # ic.disable()
-
-def logout_view(request):
-    logout(request)
-
 
 class Login(APIView):
     def post(self, request):
@@ -455,17 +452,31 @@ class CropImage(APIView):
             cropy = 0 if cropy < 0 else cropy
 
             crop_img = img[cropy: cropy + height, cropx: cropx+width]
+            # print(url)
             cv2.imwrite(url, crop_img)
 
             custom_user = user.customuser_set.all()[0]
             custom_user.image.delete()
 
             custom_user.image.save(
-                str(user.username)+'.png', files.File(open(url, 'rb')))
+                str(user.username)+'.webp', files.File(open(url, 'rb')))
             custom_user.save()
 
             os.remove(url)
             return Response({'url': custom_user.image.url}, HTTP_200_OK)
         except:
             traceback.print_exc()
+            return Response({'message': "something wrong"}, HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+# logout class
+
+class Logout(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            logout(request)
+            return Response({"message": "Logout Successful"}, HTTP_200_OK)
+        except:
             return Response({'message': "something wrong"}, HTTP_500_INTERNAL_SERVER_ERROR)

@@ -1,5 +1,5 @@
 import { getCookie } from "./getCookie.js";
-// import {Tooltip} from boots;
+
 // tootip code
 var tooltipTriggerList = [].slice.call(
   document.querySelectorAll('[data-bs-toggle="tooltip"]')
@@ -291,9 +291,21 @@ async function createroom(data, url) {
 var i = 0;
 function connect(id) {
   // console.log(window.location.protocol)
+  // 
+  
+  var list = JSON.parse(sessionStorage.getItem("sockets"));
+
+  list = list ? list:{}
+  console.log(list)
+  if((id in list)){
+    return ;
+  }
+
   chatSocket = new WebSocket(
      ((window.location.protocol == "https:") ? "wss://" : "ws://") + window.location.host + "/ws/" + id + "/"
   );
+  list[id] = 1
+  window.sessionStorage.setItem("sockets", JSON.stringify(list))
 
   chatSocket.onmessage = function (e) {
     const data = JSON.parse(e.data);
@@ -766,7 +778,7 @@ var name_in = document.getElementById("profile-name");
 var about_in = document.getElementById("profile-bio");
 
 function enablesave() {
-  console.log("in");
+  // console.log("in");
   if (name_in.value != name || about_in.value != about) {
     document.getElementById("update_info").disabled = false;
   } else {
@@ -846,9 +858,9 @@ function chkpass() {
   }
 }
 
-cur_pass.addEventListener("change", chkpass);
-pass.addEventListener("change", chkpass);
-re_pass.addEventListener("change", chkpass);
+cur_pass.addEventListener("input", chkpass);
+pass.addEventListener("input", chkpass);
+re_pass.addEventListener("input", chkpass);
 
 document.getElementById("save_pass").addEventListener("click", function () {
   postdata({ password: cur_pass.value, newpass: pass.value }, "/api/savepass");
@@ -938,16 +950,6 @@ function setTokenSentToServer(sent) {
 }
 
 function sendnotification(payload) {
-  // const notificationTitle = payload.data.title;
-
-  // const notificationOptions = {
-  //     body: payload.data.body,
-  //     icon: payload.data.image,
-  //     badge: 'https://www.google.com/search?q=stackoverflow+icon&tbm=isch&source=iu&ictx=1&fir=wJwj4cAbEmkwDM%252CsXB9L4LZX6wQKM%252C_&vet=1&usg=AI4_-kRTKQC9_SJv7meC0YJMAoppJDGGlA&sa=X&ved=2ahUKEwiKld-v0OryAhX0IbcAHVuLAFkQ9QF6BAgeEAE#imgrc=wJwj4cAbEmkwDM',
-  //     data: { url:'http://localhost:8000/#', room_id: payload.data.room }, //the url which we gonna use later
-  // };
-  // return self.registration.showNotification(notificationTitle,notificationOptions);
-  console.log("in");
   const notification = new Notification(payload.data.title, {
     body: payload.data.body,
     icon: payload.data.image,
@@ -1211,3 +1213,24 @@ file_inupt_feild.addEventListener("change", function (input) {
   }
   image_input.value = "";
 });
+
+
+//logout
+
+const logout = document.getElementById('logout');
+
+logout.addEventListener('click', async () => {
+  await fetch("api/logout", {
+    method: "GET",
+    mode: "cors",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": getCookie("csrftoken"),
+    },
+  }).then((res) => {
+    if(res.status == 200){
+      window.location.href = "/login"
+    }
+  })
+})

@@ -19,6 +19,7 @@ urlpatterns = [
     # api
     path('api/register', views.Register.as_view()),
     path('api/login', views.Login.as_view()),
+    path('api/logout', views.Logout.as_view()),
     path('api/send_link', views.Send_link.as_view()),
     path('api/changepassword', views.ChangePassword.as_view()),
     path('api/getpeople', views.Discover.as_view()),
