@@ -51,7 +51,7 @@ lazy-object-proxy==1.6.0
 mccabe==0.6.1
 msgpack==1.0.2
 msgpack-python==0.5.6
-numpy==1.21.2
+numpy==1.22.0
 oauthlib==3.2.2
 opencv-python
 packaging==21.0
