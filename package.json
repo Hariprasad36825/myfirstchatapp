@@ -4,7 +4,7 @@
   "description": "A chat application",
   "main": "chat.js",
   "dependencies": {
-    "firebase": "^9.0.0"
+    "firebase": "^9.22.1"
   },
   "devDependencies": {},
   "scripts": {
